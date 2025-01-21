@@ -87,20 +87,6 @@ class Mod implements IPostDBLoadMod
             tables.templates.items[value[1]]._props.Ergonomics = 0;
             tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
         });
-
-        // Add zero ranges
-        [
-            razorHD, pso1, pso1M2, pso1M21, tac30, vudu, hensoldtFF4, kmz1P59, kmz1P69, leupoldM4LR, marchTactical,
-            adoP4Sniper, atacr, nxs, npz1P78, ups1tyulpan, pag17, pu3_5, pmII1_8, pmII3_20, pmII5_25, tango6T, pilad,
-            specterDR, specterDRFDE
-        ].forEach(function (item) {
-            tables.templates.items[item]._props.CalibrationDistances[0] =
-                [50, 100, 150, 200, 250, 300, 333, 366, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650];
-
-            // [50, 100, 150, 200, 250, 300, 333, 366, 400, 425, 450, 475, 500, 525, 550].forEach(function (zoom) {
-            //     tables.templates.items[item]._props.CalibrationDistances[0].push(zoom);
-            // });
-        });
     }
 }
 
