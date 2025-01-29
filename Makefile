@@ -1,5 +1,5 @@
 include Makefile.helpers
-modname = EhaugwWeaponBalancing
+modname = ehaugw-weapon-balancing
 dependencies =
 
 assemble:
