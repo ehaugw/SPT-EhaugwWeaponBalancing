@@ -1,6 +1,6 @@
 MAKEFLAGS += --no-print-directory
 
-gamepath = /mnt/c/Users/eivind/MYHOME/Applications/SPT_3_10
+gamepath = /mnt/d/BattleStateGames/SPT_3_11
 pluginpath = BepInEx/plugins
 tspath = user/mods
 dllpath = bin/Debug/netstandard2.0
