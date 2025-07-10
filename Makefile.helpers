@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 gamepath = /mnt/d/BattleStateGames/SPT_3_11
 pluginpath = BepInEx/plugins
 tspath = user/mods
-dllpath = bin/Debug/netstandard2.0
+dllpath = bin/Debug/netstandard2.1
 
 dllsinto:
 	@mkdir -p ../$(TARGET)/export/$(pluginpath)/$(TARGET)
