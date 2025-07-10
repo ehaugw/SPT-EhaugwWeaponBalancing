@@ -87,6 +87,16 @@ class Mod implements IPostDBLoadMod
             tables.templates.items[value[1]]._props.Ergonomics = 0;
             tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
         });
+                                                                                                                                            // Cap ergo on all irons to 0
+        Object.keys(tables.templates.items).forEach(function (value) {
+            if (tables.templates.items[value]._props) {
+                if (tables.templates.items[value]._props.sightModType == "iron") {
+                    if (tables.templates.items[value]._props.Ergonomics > 0) {
+                        tables.templates.items[value]._props.Ergonomics = 0;
+                    }
+                }
+            }
+        });
     }
 }
 
