@@ -47,6 +47,12 @@ const scarPwsSrxRailExtension = "61965d9058ef8c428c287e0d";
 // GUNS
 const scarHFDE = "6165ac306ef05c2ce828ef74";
 const scarH = "6183afd850224f204c1da514";
+const x17 = "676176d362e0497044079f4c";
+
+// MAGAZINES
+const scarHMag = "618168dc8004cc50514c34fc";
+const scarHMagFDE = "6183d53f1cb55961fa0fdcda";
+const ar10Lancer = "65293c38fc460e50a509cb25";
 
 // BARRELS
 const scarH16in = "6183b0711cb55961fa0fdcad";
@@ -77,15 +83,25 @@ class Mod implements IPostDBLoadMod
             tables.templates.items[value]._props.Ergonomics = 11;
         });
 
+        // SCAR Shouldn't be worse than X-17
+        [scarH, scarHFDE].forEach(function (value) {
+            tables.templates.items[value]._props.Ergonomics = tables.templates.items[x17]._props.Ergonomics
+        });
+
+        // SCAR Mag shouldn't be worse than X-17 mag
+        [scarHMag, scarHMagFDE].forEach(function (value) {
+            tables.templates.items[value]._props.Ergonomics = tables.templates.items[ar10Lancer]._props.Ergonomics
+        });
+
         // SCAR PPM transfer ergo to grip rather than extension
         [
             [scarPMMRail,    scarPMMRailExtension],
             [scarPMMRailFDE, scarPMMRailExtensionFDE],
-            // [scarBottomRail, scarPwsSrxRailExtension] // this is the base item, buffing this affects game balance
+            [scarBottomRail, scarPwsSrxRailExtension],
         ].forEach(function (value) {
-            var ergoBonus = tables.templates.items[value[1]]._props.Ergonomics;
+            // var ergoBonus = tables.templates.items[value[1]]._props.Ergonomics;
             tables.templates.items[value[1]]._props.Ergonomics = 0;
-            tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
+            // tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
         });
                                                                                                                                             // Cap ergo on all irons to 0
         Object.keys(tables.templates.items).forEach(function (value) {
