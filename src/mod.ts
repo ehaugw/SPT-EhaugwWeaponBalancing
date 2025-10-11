@@ -43,6 +43,8 @@ const scarPMMRailExtension = "66ffe2fbab3336cc0106382b";
 const scarPMMRailExtensionFDE = "66ffe5edfe9b38259606530d";
 const scarBottomRail = "61816df1d3a39d50044c139e";
 const scarPwsSrxRailExtension = "61965d9058ef8c428c287e0d";
+const scarVltorCasv = "66ffe811f5d758d71101e89a";
+const scarVltorCasvBrown = "66ffea06132225f0fe061394";
 
 // GUNS
 const scarHFDE = "6165ac306ef05c2ce828ef74";
@@ -70,14 +72,6 @@ class Mod implements IPostDBLoadMod
         const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
         const tables: IDatabaseTables = databaseServer.getTables();
 
-        // test scar accuracy change
-        // tables.templates.items[scarH16in]._props.CenterOfImpact *= 0.01;
-        
-        // scar h default ammo
-        [scarH, scarHFDE].forEach(function (value) {
-            tables.templates.items[value]._props.defAmmo = m80_762;
-        });
-
         // SCAR Stock Ergo
         [scarStock, scarStockFDE].forEach(function (value) {
             tables.templates.items[value]._props.Ergonomics = 11;
@@ -93,7 +87,10 @@ class Mod implements IPostDBLoadMod
             tables.templates.items[value]._props.Ergonomics = tables.templates.items[ar10Lancer]._props.Ergonomics
         });
 
-        // SCAR PPM transfer ergo to grip rather than extension
+        // Remove rail extension ergo bonus and nerf Vltor CASV accordingly
+        var ergoBonus = tables.templates.items[scarPwsSrxRailExtension]._props.Ergonomics;
+        tables.templates.items[scarVltorCasv]._props.Ergonomics -= ergoBonus;
+        tables.templates.items[scarVltorCasvBrown]._props.Ergonomics -= ergoBonus;
         [
             [scarPMMRail,    scarPMMRailExtension],
             [scarPMMRailFDE, scarPMMRailExtensionFDE],
