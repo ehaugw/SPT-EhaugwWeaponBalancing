@@ -50,6 +50,8 @@ const scarVltorCasvBrown = "66ffea06132225f0fe061394";
 const scarHFDE = "6165ac306ef05c2ce828ef74";
 const scarH = "6183afd850224f204c1da514";
 const x17 = "676176d362e0497044079f4c";
+const scarL = "6184055050224f204c1da540";
+const scarLFDE = "618428466ef05c2ce828f218";
 
 // MAGAZINES
 const scarHMag = "618168dc8004cc50514c34fc";
@@ -79,12 +81,16 @@ class Mod implements IPostDBLoadMod
 
         // SCAR Shouldn't be worse than X-17
         [scarH, scarHFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics = tables.templates.items[x17]._props.Ergonomics
+            tables.templates.items[value]._props.Ergonomics = tables.templates.items[x17]._props.Ergonomics;
+        });
+
+        [scarL ,scarLFDE].forEach(function (value) {
+            tables.templates.items[value]._props.Ergonomics += 2;
         });
 
         // SCAR Mag shouldn't be worse than X-17 mag
         [scarHMag, scarHMagFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics = tables.templates.items[ar10Lancer]._props.Ergonomics
+            tables.templates.items[value]._props.Ergonomics = tables.templates.items[ar10Lancer]._props.Ergonomics;
         });
 
         // Remove rail extension ergo bonus and nerf Vltor CASV accordingly
