@@ -60,6 +60,8 @@ const ar10Lancer = "65293c38fc460e50a509cb25";
 
 // BARRELS
 const scarH16in = "6183b0711cb55961fa0fdcad";
+const scarH20in = "6183b084a112697a4b3a6e6c";
+const scarH13in = "618168b350224f204c1da4d8";
 
 // AMMO
 const m80_762 = "58dd3ad986f77403051cba8f";
@@ -106,7 +108,13 @@ class Mod implements IPostDBLoadMod
             tables.templates.items[value[1]]._props.Ergonomics = 0;
             // tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
         });
-                                                                                                                                            // Cap ergo on all irons to 0
+
+        // SCAR should be more accurate
+        [scarH13in, scarH16in, scarH20in].forEach(function (value) {
+            tables.templates.items[value]._props.CenterOfImpact *= 0.9
+        });
+
+        // Cap ergo on all irons to 0
         Object.keys(tables.templates.items).forEach(function (value) {
             if (tables.templates.items[value]._props) {
                 if (tables.templates.items[value]._props.sightModType == "iron") {
