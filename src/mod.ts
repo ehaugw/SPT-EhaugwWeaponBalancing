@@ -110,8 +110,8 @@ class Mod implements IPostDBLoadMod
         });
 
         // SCAR should be more accurate
-        [scarH13in, scarH16in, scarH20in].forEach(function (value) {
-            tables.templates.items[value]._props.CenterOfImpact *= 0.9
+        [[scarH13in, 0.8], [scarH16in, 0.9], [scarH20in, 0.9]].forEach(function (value: [string, number]) {
+            tables.templates.items[value[0]]._props.CenterOfImpact *= value[1];
         });
 
         // Cap ergo on all irons to 0
