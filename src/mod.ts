@@ -135,7 +135,7 @@ class Mod implements IPostDBLoadMod
             }
         });
 
-        createScarGen3Upper(customItem, databaseServer, tables);
+        this.createScarGen3Upper(customItem, databaseServer, tables);
     }
 
     public createScarGen3Upper(customItem, databaseServer, tables): void {
