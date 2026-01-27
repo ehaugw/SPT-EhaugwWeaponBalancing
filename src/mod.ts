@@ -4,6 +4,8 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import { CustomItemService } from "@spt/services/mod/CustomItemService";
+import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 
 // STOCKS
 const scarStock = "618167528004cc50514c34f9";
@@ -46,6 +48,10 @@ const scarPwsSrxRailExtension = "61965d9058ef8c428c287e0d";
 const scarVltorCasv = "66ffe811f5d758d71101e89a";
 const scarVltorCasvBrown = "66ffea06132225f0fe061394";
 
+// RECEIVERS
+const scarHUpperFDE = "6165aeedfaa1272e431521e3"
+const scarHUpperGen3FDE = "6978c12f547952b888405528"
+
 // GUNS
 const scarHFDE = "6165ac306ef05c2ce828ef74";
 const scarH = "6183afd850224f204c1da514";
@@ -73,6 +79,7 @@ class Mod implements IPostDBLoadMod
         // const logger = container.resolve<ILogger>("WinstonLogger");
 
         // get database from the server
+        const customItem = container.resolve<CustomItemService>("CustomItemService");
         const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
         const tables: IDatabaseTables = databaseServer.getTables();
 
@@ -124,6 +131,58 @@ class Mod implements IPostDBLoadMod
                 }
             }
         });
+    }
+
+    public createScarGen3Upper(customItem, databaseServer, tables): void {
+        const mapsCase: NewItemFromCloneDetails = {
+            itemTplToClone: scarHUpperFDE,
+            overrideProperties: {
+                Name: "SCAR-H Gen 3 Upper Receiver (FDE)",
+                ShortName: "scarHUpperGen3FDE",
+                Description: "A third generation upper receiver for the SCAR-H assault rifle, manufactured by Fabrique Nationale Herstal. Features a top rail for installation of additional equipment. Comes in black and flat dark earth.",
+                Prefab: {
+                    "path": "SCAR_H_GEN_3/scar_gen_3.bundle",
+                    "rcid": ""
+                },
+            },
+            parentId: "5795f317245977243854e041",
+            newId: scarHUpperGen3FDE,
+            fleaPriceRoubles: 50000,
+            handbookPriceRoubles: 50000,
+            handbookParentId: "scarHUpperFDE",
+            locales: {
+                en: {
+                name: "SCAR-H Gen 3 Upper Receiver (FDE)",
+                shortname: "scarHUpperGen3FDE",
+                description: "A third generation upper receiver for the SCAR-H assault rifle, manufactured by Fabrique Nationale Herstal. Features a top rail for installation of additional equipment. Comes in black and flat dark earth.",
+                }
+            }
+        };
+
+        customItem.createItemFromClone(mapsCase);
+
+        const traders = tables.traders["54cb57776803fa99248b456e"];
+
+        traders.assort.items.push({
+            "_id": scarHUpperGen3FDE,
+            "_tpl": scarHUpperGen3FDE,
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd":
+            {
+                "UnlimitedCount": true,
+                "StackObjectsCount": 99999
+            }
+        });
+        traders.assort.barter_scheme[scarHUpperGen3FDE] = [
+            [
+                {
+                    "count": 50000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ];
+        traders.assort.loyal_level_items[scarHUpperGen3FDE] = 1;
     }
 }
 
