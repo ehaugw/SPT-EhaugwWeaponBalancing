@@ -166,7 +166,7 @@ class Mod implements IPostDBLoadMod
 
         customItem.createItemFromClone(mapsCase);
 
-        const traders = tables.traders["54cb57776803fa99248b456e"];
+        const traders = tables.traders["5449016a4bdc2d6f028b456f"];
 
         traders.assort.items.push({
             "_id": scarHUpperGen3FDE,

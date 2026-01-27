@@ -1,0 +1,8 @@
+{
+    "manifest": [
+        {
+            "key": "SCAR_H_GEN_3/scar_gen_3.bundle",
+            "dependencyKeys": []
+        }
+    ]
+}
