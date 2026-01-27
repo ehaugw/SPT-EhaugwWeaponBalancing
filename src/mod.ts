@@ -7,6 +7,9 @@ import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 import { CustomItemService } from "@spt/services/mod/CustomItemService";
 import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 
+// GENERICS
+const genericReceiver = "55802f4a4bdc2ddb688b4569";
+
 // STOCKS
 const scarStock = "618167528004cc50514c34f9";
 const scarStockFDE = "61825d136ef05c2ce828f1cc";
@@ -147,11 +150,11 @@ class Mod implements IPostDBLoadMod
                     "rcid": ""
                 },
             },
-            parentId: "5795f317245977243854e041",
+            parentId: genericReceiver,
             newId: scarHUpperGen3FDE,
             fleaPriceRoubles: 50000,
-            handbookPriceRoubles: 50000,
-            handbookParentId: "scarHUpperFDE",
+            // handbookPriceRoubles: 50000,
+            // handbookParentId: "scarHUpperFDE",
             locales: {
                 en: {
                 name: "SCAR-H Gen 3 Upper Receiver (FDE)",
