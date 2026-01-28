@@ -146,7 +146,7 @@ class Mod implements IPostDBLoadMod
                 ShortName: "scarHUpperGen3FDE",
                 Description: "A third generation upper receiver for the SCAR-H assault rifle, manufactured by Fabrique Nationale Herstal. Features a top rail for installation of additional equipment. Comes in black and flat dark earth.",
                 Prefab: {
-                    "path": "SCAR_H_GEN_3/scar_gen_3.bundle",
+                    "path": "SCAR_H_GEN_3/scar_h_gen_3_upper.bundle",
                     "rcid": ""
                 },
             },

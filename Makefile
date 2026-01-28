@@ -2,7 +2,10 @@ include Makefile.helpers
 modname = ehaugw-weapon-balancing
 dependencies =
 
-assemble:
+unity-from:
+	cp /mnt/c/Users/eivind/MYHOME/Documents/SPTModding/SDK/EscapeFromTarkov-SDK/AssetBundles/StandaloneWindows/scar_h_gen_3_upper.bundle bundles/SCAR_H_GEN_3/
+
+assemble: unity-from
 	rm -f -r export
 	mkdir -p export/$(tspath)/$(modname)
 	mkdir -p export/$(tspath)/$(modname)/src
