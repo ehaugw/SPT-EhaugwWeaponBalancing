@@ -1,7 +1,7 @@
 {
     "manifest": [
         {
-            "key": "SCAR_H_GEN_3/scar_gen_3.bundle bundles/SCAR_H_GEN_3/scar_h_gen_3_upper.bundle",
+            "key": "SCAR_H_GEN_3/scar_h_gen_3_upper.bundle",
             "dependencyKeys": [
                 "shaders",
                 "cubemaps",
