@@ -146,7 +146,8 @@ class Mod implements IPostDBLoadMod
     }
 
     public createScarGen3Upper(customItem, databaseServer, tables): void {
-        const mapsCase: NewItemFromCloneDetails = {
+        // CREATE ITEM
+        const gen_3_upper_creator: NewItemFromCloneDetails = {
             itemTplToClone: scarHUpperFDE,
             overrideProperties: {
                 Name: "SCAR-H Gen 3 Upper Receiver (FDE)",
@@ -170,14 +171,16 @@ class Mod implements IPostDBLoadMod
                 }
             }
         };
+        customItem.createItemFromClone(gen_3_upper_creator);
 
-        customItem.createItemFromClone(mapsCase);
+        // MAKE ELIGIBLE FOR SCAR
+        tables.templates.items[scarH]._props.Slots[2]._props.filters[0].Filter.push(scarHUpperGen3FDE);
 
+        // TRADER STUFF
         const traders = tables.traders[therapist];
-
         traders.assort.items.push({
-            "_id": scarHUpperGen3FDE,
-            "_tpl": tradeScarHUpperGen3FDE,
+            "_id": tradeScarHUpperGen3FDE,
+            "_tpl": scarHUpperGen3FDE,
             "parentId": "hideout",
             "slotId": "hideout",
             "upd":
