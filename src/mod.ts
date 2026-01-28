@@ -9,6 +9,7 @@ import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 
 // GENERICS
 const genericReceiver = "55802f4a4bdc2ddb688b4569";
+const roubles = "5449016a4bdc2d6f028b456f";
 
 // STOCKS
 const scarStock = "618167528004cc50514c34f9";
@@ -74,6 +75,12 @@ const scarH13in = "618168b350224f204c1da4d8";
 
 // AMMO
 const m80_762 = "58dd3ad986f77403051cba8f";
+
+// TRADES
+const tradeScarHUpperGen3FDE = "6979fbfe3121edb6d765bb05";
+
+// TRADERS
+const therapist = "54cb57776803fa99248b456e";
 
 class Mod implements IPostDBLoadMod
 {    
@@ -166,11 +173,11 @@ class Mod implements IPostDBLoadMod
 
         customItem.createItemFromClone(mapsCase);
 
-        const traders = tables.traders["54cb57776803fa99248b456e"];
+        const traders = tables.traders[therapist];
 
         traders.assort.items.push({
             "_id": scarHUpperGen3FDE,
-            "_tpl": scarHUpperGen3FDE,
+            "_tpl": tradeScarHUpperGen3FDE,
             "parentId": "hideout",
             "slotId": "hideout",
             "upd":
@@ -179,15 +186,15 @@ class Mod implements IPostDBLoadMod
                 "StackObjectsCount": 99999
             }
         });
-        traders.assort.barter_scheme[scarHUpperGen3FDE] = [
+        traders.assort.barter_scheme[tradeScarHUpperGen3FDE] = [
             [
                 {
                     "count": 50000,
-                    "_tpl": "5449016a4bdc2d6f028b456f"
+                    "_tpl": roubles
                 }
             ]
         ];
-        traders.assort.loyal_level_items[scarHUpperGen3FDE] = 1;
+        traders.assort.loyal_level_items[tradeScarHUpperGen3FDE] = 1;
     }
 }
 
