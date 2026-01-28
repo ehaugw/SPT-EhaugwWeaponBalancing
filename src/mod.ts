@@ -8,7 +8,8 @@ import { CustomItemService } from "@spt/services/mod/CustomItemService";
 import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 
 // GENERICS
-const genericReceiver = "55802f4a4bdc2ddb688b4569";
+// 5b5f764186f77447ec5d7714
+const genericReceiver = "55818a304bdc2db5418b457d";
 const roubles = "5449016a4bdc2d6f028b456f";
 
 // STOCKS
@@ -160,9 +161,9 @@ class Mod implements IPostDBLoadMod
             },
             parentId: genericReceiver,
             newId: scarHUpperGen3FDE,
-            fleaPriceRoubles: 50000,
-            // handbookPriceRoubles: 50000,
-            // handbookParentId: "scarHUpperFDE",
+            fleaPriceRoubles: 15000,
+            handbookPriceRoubles: 15000,
+            handbookParentId: "5b5f764186f77447ec5d7714",
             locales: {
                 en: {
                 name: "SCAR-H Gen 3 Upper Receiver (FDE)",
@@ -174,7 +175,10 @@ class Mod implements IPostDBLoadMod
         customItem.createItemFromClone(gen_3_upper_creator);
 
         // MAKE ELIGIBLE FOR SCAR
-        tables.templates.items[scarH]._props.Slots[2]._props.filters[0].Filter.push(scarHUpperGen3FDE);
+        [scarH, scarHFDE, x17].forEach(function (value: string) {
+            tables.templates.items[value]._props.Slots[2]._props.filters[0].Filter.push(scarHUpperGen3FDE);
+        });
+
 
         // TRADER STUFF
         const traders = tables.traders[therapist];
@@ -192,7 +196,7 @@ class Mod implements IPostDBLoadMod
         traders.assort.barter_scheme[tradeScarHUpperGen3FDE] = [
             [
                 {
-                    "count": 50000,
+                    "count": 15000,
                     "_tpl": roubles
                 }
             ]
