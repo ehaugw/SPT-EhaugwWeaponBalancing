@@ -8,7 +8,6 @@ import { CustomItemService } from "@spt/services/mod/CustomItemService";
 import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 
 // GENERICS
-// 5b5f764186f77447ec5d7714
 const genericReceiver = "55818a304bdc2db5418b457d";
 const roubles = "5449016a4bdc2d6f028b456f";
 
@@ -151,8 +150,8 @@ class Mod implements IPostDBLoadMod
         const gen_3_upper_creator: NewItemFromCloneDetails = {
             itemTplToClone: scarHUpperFDE,
             overrideProperties: {
-                Name: "SCAR-H Gen 3 Upper Receiver (FDE)",
-                ShortName: "scarHUpperGen3FDE",
+                Name: "SCAR-H Gen 3 upper receiver (FDE)",
+                ShortName: "Mk17 Gen3",
                 Description: "A third generation upper receiver for the SCAR-H assault rifle, manufactured by Fabrique Nationale Herstal. Features a top rail for installation of additional equipment. Comes in black and flat dark earth.",
                 Prefab: {
                     "path": "SCAR_H_GEN_3/scar_h_gen_3_upper.bundle",
@@ -166,8 +165,8 @@ class Mod implements IPostDBLoadMod
             handbookParentId: "5b5f764186f77447ec5d7714",
             locales: {
                 en: {
-                name: "SCAR-H Gen 3 Upper Receiver (FDE)",
-                shortname: "scarHUpperGen3FDE",
+                name: "SCAR-H Gen 3 upper receiver (FDE)",
+                shortname: "Mk17 Gen3",
                 description: "A third generation upper receiver for the SCAR-H assault rifle, manufactured by Fabrique Nationale Herstal. Features a top rail for installation of additional equipment. Comes in black and flat dark earth.",
                 }
             }
