@@ -1,4 +1,5 @@
 include Makefile.helpers
+include Makefile.secret
 modname = ehaugw-weapon-balancing
 dependencies =
 
@@ -15,6 +16,7 @@ forceinstall:
 	make assemble
 	rm -r -f $(gamepath)/$(pluginpath)/$(modname)
 	cp -u -r export/* $(gamepath)
+	scp -r export/* $(hostwanuser):SPT_3_11/server_files
 
 play:
 	(make install && cd .. && make play)
