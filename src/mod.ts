@@ -4,6 +4,14 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
+import { CustomItemService } from "@spt/services/mod/CustomItemService";
+
+// MATCH AMMO
+const handLoadedAmmoDescription = "\n\nCarefully hand loaded with high quality gunpowder, from the best bullets of a larger batch of the same ammo.";
+
+// BARTER ITEMS
+const gunpowderHawk = "5d6fc87386f77449db3db94e";
 
 // STOCKS
 const scarStock = "618167528004cc50514c34f9";
@@ -64,7 +72,9 @@ const scarH20in = "6183b084a112697a4b3a6e6c";
 const scarH13in = "618168b350224f204c1da4d8";
 
 // AMMO
-const m80_762 = "58dd3ad986f77403051cba8f";
+const bcp_fmj_762 = "5e023e53d4353e3302577c4c";
+const bcp_fmj_762_match = "697f2108910ec639c9c5c5cf";
+const genericAmmo = "5485a8684bdc2da71d8b4567";
 
 class Mod implements IPostDBLoadMod
 {    
@@ -123,6 +133,87 @@ class Mod implements IPostDBLoadMod
                     }
                 }
             }
+        });
+
+        this.matchAmmo(customItem, tables);
+    }
+
+    public matchAmmo(customItem, tables): void {
+        const customItemObject: NewItemFromCloneDetails = {
+            itemTplToClone: bcp_fmj_762,
+            overrideProperties: {
+                Name: "7.62x51mm BCP FMJ Match",
+                ShortName: "BCP Match",
+                Description: "A 7.62x51mm BCP FMJ cartridge with a 10.9 gram lead core bullet with a bimetallic jacket in a steel case;. Intended for hunting, home defense, and target practice, produced by Barnaul Cartridge Plant. Despite its rudimentary design, this cartridge is capable of providing an outstanding stopping power effect, as well as being able to pierce through basic ballistic body protections as well as some intermediate models." + handLoadedAmmoDescription,
+            },
+            parentId: genericAmmo,
+            newId: bcp_fmj_762_match,
+            fleaPriceRoubles: 400,
+            handbookPriceRoubles: 400,
+            handbookParentId: "5b47574386f77428ca22b33b",
+            locales: {
+                en: {
+                name: "7.62x51mm BCP FMJ Match",
+                shortName: "BCP Match",
+                description: "A 7.62x51mm BCP FMJ cartridge with a 10.9 gram lead core bullet with a bimetallic jacket in a steel case;. Intended for hunting, home defense, and target practice, produced by Barnaul Cartridge Plant. Despite its rudimentary design, this cartridge is capable of providing an outstanding stopping power effect, as well as being able to pierce through basic ballistic body protections as well as some intermediate models." + handLoadedAmmoDescription,
+                }
+            }
+        };
+        customItem.createItemFromClone(customItemObject);
+        tables.templates.items[bcp_fmj_762_match]._props.ammoAccr = 15;
+
+
+        // CRAFTING
+        // Area	ID
+        // Workbench	10
+        // Lavatory	3
+        // Medstation	7
+        // Nutrition Unit	5
+        // Intelligence Center	11
+        const areaTypeWorkbench = 10;
+
+        const output = 80;
+        const bcpFmjMatchCraft = "697f237311db741e2dad457f";
+
+        tables.hideout.production.recipes.push({
+            "_id": bcpFmjMatchCraft,
+            "areaType": 10,
+            "continuous": false,
+            "count": output,
+            "endProduct": bcp_fmj_762_match,
+            "isCodeProduction": false,
+            "isEncoded": false,
+            "locked": false,
+            "needFuelForAllProductionTime": false,
+            "productionLimitCount": 0,
+            "productionTime": output * 3.5 * 60,
+            "requirements": [
+                {
+                    "areaType": areaTypeWorkbench,
+                    "requiredLevel": 2,
+                    "type": "Area"
+                },
+                {
+                    "count": output * 2,
+                    "isEncoded": false,
+                    "isFunctional": false,
+                    "isSpawnedInSession": false,
+                    "templateId": bcp_fmj_762,
+                    "type": "Item"
+                },
+                {
+                    "count": 1,
+                    "isEncoded": false,
+                    "isFunctional": false,
+                    "isSpawnedInSession": false,
+                    "templateId": gunpowderHawk,
+                    "type": "Item"
+                },
+                {
+                    "templateId": "544fb5454bdc2df8738b456a",
+                    "type": "Tool"
+                }
+            ]
         });
     }
 }
