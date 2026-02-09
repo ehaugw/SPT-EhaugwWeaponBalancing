@@ -8,7 +8,7 @@ import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
 import { CustomItemService } from "@spt/services/mod/CustomItemService";
 
 // MATCH AMMO
-const handLoadedAmmoDescription = "\n\nCarefully hand loaded with high quality gunpowder, from the best bullets of a larger batch of the same ammo.";
+const handLoadedAmmoDescription = "\n\nCarefully hand picked from a larger batch of the same ammo, and loaded with high quality gunpowder for a more consistent velocity.";
 
 // BARTER ITEMS
 const gunpowderHawk = "5d6fc87386f77449db3db94e";
@@ -17,32 +17,13 @@ const gunpowderHawk = "5d6fc87386f77449db3db94e";
 const scarStock = "618167528004cc50514c34f9";
 const scarStockFDE = "61825d136ef05c2ce828f1cc";
 
-// OPTICS
-const razorHD = "618ba27d9008e4636a67f61d";
-const pso1 = "5c82342f2e221644f31c060e";
-const pso1M2 = "5c82343a2e221644f31c0611";
-const pso1M21 = "576fd4ec2459777f0b518431"
-const tac30 = "5b2388675acfc4771e1be0be";
-const vudu = "5b3b99475acfc432ff4dcbee";
-const hensoldtFF4 = "56ea70acd2720b844b8b4594";
-const kmz1P59 = "5d0a3a58d7ad1a669c15ca14";
-const kmz1P69 = "5d0a3e8cd7ad1a6f6a3d35bd";
-const leupoldM4LR = "5a37cb10c4a282329a73b4e7";
-const marchTactical = "57c5ac0824597754771e88a9";
-const adoP4Sniper = "5dfe6104585a0c3e995c7b82";
-const atacr = "5aa66be6e5b5b0214e506e97";
-const nxs = "544a3d0a4bdc2d1b388b4567";
-const npz1P78 = "618a75f0bd321d49084cd399";
-const ups1tyulpan = "5cf638cbd7f00c06595bc936";
-const pag17 = "5d53f4b7a4b936793d58c780";
-const pu3_5 = "5b3f7c1c5acfc40dc5296b1d";
-const pmII1_8 = "617151c1d92c473c770214ab";
-const pmII3_20 = "61714eec290d254f5e6b2ffc";
-const pmII5_25 = "62850c28da09541f43158cca";
-const tango6T = "6567e7681265c8a131069b0f";
-const pilad = "5dff772da3651922b360bf91";
-const specterDR = "57ac965c24597706be5f975c";
-const specterDRFDE = "57aca93d2459771f2c7e26db";
+const scarStockVltorFDE = "66ffc2ecfe9b3825960652f7";
+const scarStockVltor = "66ffc2bd132225f0fe0611d8";
+
+const scarStockFolding = "61816734d8e3106d9806c1f3";
+const scarStockFoldingFDE = "61825d06d92c473c770215de";
+
+const scarButtpad = "618167616ef05c2ce828f1a8";
 
 // RAILS
 const scarPMMRail = "66ffc72082d36dec82030c1f";
@@ -52,7 +33,12 @@ const scarPMMRailExtensionFDE = "66ffe5edfe9b38259606530d";
 const scarBottomRail = "61816df1d3a39d50044c139e";
 const scarPwsSrxRailExtension = "61965d9058ef8c428c287e0d";
 const scarVltorCasv = "66ffe811f5d758d71101e89a";
-const scarVltorCasvBrown = "66ffea06132225f0fe061394";
+const scarVltorCasvFDE = "66ffea06132225f0fe061394";
+const scarMrex = "619666f4af1f5202c57a952d";
+const scarMrexFDE = "66ffc6ceb7ff397142017c3a";
+const scarVltorCasvExtension = "66ffea456be19fd81e0ef742";
+const scarVltorCasvExtensionFDE = "66ffeab4ab3336cc01063833";
+
 
 // GUNS
 const scarHFDE = "6165ac306ef05c2ce828ef74";
@@ -72,96 +58,128 @@ const scarH20in = "6183b084a112697a4b3a6e6c";
 const scarH13in = "618168b350224f204c1da4d8";
 
 // AMMO
-const bcp_fmj_762 = "5e023e53d4353e3302577c4c";
-const bcp_fmj_762_match = "697f2108910ec639c9c5c5cf";
+const tcw_sp_762 = "5e023e6e34d52a55c3304f71";
+const tcw_sp_762_match = "697f2108910ec639c9c5c5cf";
 const genericAmmo = "5485a8684bdc2da71d8b4567";
 
 class Mod implements IPostDBLoadMod
-{    
+{
+    tables: IDatabaseTables;
+    logger: ILogger;
+
     public postDBLoad(container: DependencyContainer): void
     {
-        // const logger = container.resolve<ILogger>("WinstonLogger");
+        this.logger = container.resolve<ILogger>("WinstonLogger");
+
 
         // get database from the server
+        const customItem = container.resolve<CustomItemService>("CustomItemService");
         const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
-        const tables: IDatabaseTables = databaseServer.getTables();
+        this.tables = databaseServer.getTables();
+        // this.logger.info(Object.keys(tables));
 
-        // SCAR Stock Ergo
-        [scarStock, scarStockFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics = 11;
-        });
+        this.rebalanceScar();
+        this.capIronSights();
+        this.matchAmmo(customItem);
+        this.addAmmoIfOther(tcw_sp_762_match, tcw_sp_762);
+    }
 
-        // SCAR Shouldn't be worse than X-17
-        [scarH, scarHFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics = tables.templates.items[x17]._props.Ergonomics;
-        });
-
-        [scarL ,scarLFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics += 2;
-        });
-
-        // SCAR Mag shouldn't be worse than X-17 mag
-        [scarHMag, scarHMagFDE].forEach(function (value) {
-            tables.templates.items[value]._props.Ergonomics = tables.templates.items[ar10Lancer]._props.Ergonomics;
-        });
-
-        // Remove rail extension ergo bonus and nerf Vltor CASV accordingly
-        var ergoBonus = tables.templates.items[scarPwsSrxRailExtension]._props.Ergonomics;
-        tables.templates.items[scarVltorCasv]._props.Ergonomics -= ergoBonus;
-        tables.templates.items[scarVltorCasvBrown]._props.Ergonomics -= ergoBonus;
-        [
-            [scarPMMRail,    scarPMMRailExtension],
-            [scarPMMRailFDE, scarPMMRailExtensionFDE],
-            [scarBottomRail, scarPwsSrxRailExtension],
-        ].forEach(function (value) {
-            // var ergoBonus = tables.templates.items[value[1]]._props.Ergonomics;
-            tables.templates.items[value[1]]._props.Ergonomics = 0;
-            // tables.templates.items[value[0]]._props.Ergonomics += ergoBonus - tables.templates.items[value[1]]._props.Ergonomics;
-        });
-
+    public rebalanceScar(): void {
+        // Total buff to accuracy
         // SCAR should be more accurate
-        [[scarH13in, 0.8], [scarH16in, 0.9], [scarH20in, 0.9]].forEach(function (value: [string, number]) {
-            tables.templates.items[value[0]]._props.CenterOfImpact *= value[1];
+        [[scarH13in, 0.8], [scarH16in, 0.9], [scarH20in, 0.9]].forEach((value: [string, number]) => {
+            this.tables.templates.items[value[0]]._props.CenterOfImpact *= value[1];
         });
 
+        // Power neutral
+        // Early game buff
+        // This leaves Vltor with 2 RR more than default
+        this.moveRecoil(
+            [scarStockVltor, scarStockVltorFDE],
+            [scarStockFolding, scarStockFoldingFDE],
+            -2
+        );
+
+        // End game versatility but not buff
+        // Make default stock 4 ergo better than vltor stock (still 2 recoil reduction worse)
+        // Big early game buff
+        [scarStock, scarStockFDE].forEach((value) => {
+            this.setErgo(
+                value, this.getErgo(scarStockVltor) + 4 - this.getErgo(scarButtpad)
+            );
+        });
+    }
+
+    public capIronSights(): void {
         // Cap ergo on all irons to 0
-        Object.keys(tables.templates.items).forEach(function (value) {
-            if (tables.templates.items[value]._props) {
-                if (tables.templates.items[value]._props.sightModType == "iron") {
-                    if (tables.templates.items[value]._props.Ergonomics > 0) {
-                        tables.templates.items[value]._props.Ergonomics = 0;
+        Object.keys(this.tables.templates.items).forEach((value) => {
+            if (this.tables.templates.items[value]._props) {
+                if (this.tables.templates.items[value]._props.sightModType == "iron") {
+                    if (this.getErgo(value) > 0) {
+                        this.setErgo(value, 0);
                     }
                 }
             }
         });
-
-        this.matchAmmo(customItem, tables);
     }
 
-    public matchAmmo(customItem, tables): void {
+    public addAmmoIfOther(new_ammo: string, required_ammo: string): void {
+        Object.keys(this.tables.templates.items).forEach((value) => {
+            const item = this.tables.templates.items[value]
+
+            // if (item?._props?.Chambers) {
+            //     this.logger.info(item?._name);
+            // }
+            item?._props?.Chambers?.forEach((chamber: any) => {
+                // this.logger.info("-processing a chamber");
+
+                chamber?._props?.filters.forEach((entry: any) => {
+                    // this.logger.info("--processing a filter");
+                    if (entry?.Filter?.includes(required_ammo)) {
+                        entry?.Filter?.push(new_ammo);
+                    }
+                });
+            });
+
+            // if (item?._props?.Cartridges) {
+            //     this.logger.info(item?._name);
+            // };
+
+            item?._props?.Cartridges?.forEach((cartridge: any) => {
+                // this.logger.info("-processing a magazine");
+                cartridge?._props?.filters?.forEach((entry: any) => {
+                    // this.logger.info("--processing a filter");
+                    if (entry?.Filter?.includes(required_ammo)) {
+                        entry?.Filter?.push(new_ammo);
+                    }
+                });
+            });
+        });
+    }
+
+    public matchAmmo(customItem): void {
         const customItemObject: NewItemFromCloneDetails = {
-            itemTplToClone: bcp_fmj_762,
+            itemTplToClone: tcw_sp_762,
             overrideProperties: {
-                Name: "7.62x51mm BCP FMJ Match",
-                ShortName: "BCP Match",
-                Description: "A 7.62x51mm BCP FMJ cartridge with a 10.9 gram lead core bullet with a bimetallic jacket in a steel case;. Intended for hunting, home defense, and target practice, produced by Barnaul Cartridge Plant. Despite its rudimentary design, this cartridge is capable of providing an outstanding stopping power effect, as well as being able to pierce through basic ballistic body protections as well as some intermediate models." + handLoadedAmmoDescription,
+                Name: "7.62x51mm TCW SP Match",
+                ShortName: "TCW Match",
+                Description: "A 7.62x51mm cartridge with a 10.7 gram lead core soft-point (SP) bullet with a bimetallic semi-jacket in a steel case; intended for hunting, home defense, and target practice, produced by Tula Cartridge Works. This cartridge is aimed at the amateur public, both hunting, recreational and sport shooting, thanks to its versatility, as well as being able to pierce through basic ballistic body protections and providing excellent results against intermediate models, however, it has a high probability of bouncing off various surfaces." + handLoadedAmmoDescription,
             },
             parentId: genericAmmo,
-            newId: bcp_fmj_762_match,
+            newId: tcw_sp_762_match,
             fleaPriceRoubles: 400,
             handbookPriceRoubles: 400,
             handbookParentId: "5b47574386f77428ca22b33b",
             locales: {
                 en: {
-                name: "7.62x51mm BCP FMJ Match",
-                shortName: "BCP Match",
-                description: "A 7.62x51mm BCP FMJ cartridge with a 10.9 gram lead core bullet with a bimetallic jacket in a steel case;. Intended for hunting, home defense, and target practice, produced by Barnaul Cartridge Plant. Despite its rudimentary design, this cartridge is capable of providing an outstanding stopping power effect, as well as being able to pierce through basic ballistic body protections as well as some intermediate models." + handLoadedAmmoDescription,
+                name: "7.62x51mm TCW SP Match",
+                shortName: "TCW Match",
+                description: "A 7.62x51mm cartridge with a 10.7 gram lead core soft-point (SP) bullet with a bimetallic semi-jacket in a steel case; intended for hunting, home defense, and target practice, produced by Tula Cartridge Works. This cartridge is aimed at the amateur public, both hunting, recreational and sport shooting, thanks to its versatility, as well as being able to pierce through basic ballistic body protections and providing excellent results against intermediate models, however, it has a high probability of bouncing off various surfaces." + handLoadedAmmoDescription,
                 }
             }
         };
         customItem.createItemFromClone(customItemObject);
-        tables.templates.items[bcp_fmj_762_match]._props.ammoAccr = 15;
-
+        this.tables.templates.items[tcw_sp_762_match]._props.ammoAccr = 20;
 
         // CRAFTING
         // Area	ID
@@ -173,14 +191,14 @@ class Mod implements IPostDBLoadMod
         const areaTypeWorkbench = 10;
 
         const output = 80;
-        const bcpFmjMatchCraft = "697f237311db741e2dad457f";
+        const tcw_sp_match_craft = "697f237311db741e2dad457f";
 
-        tables.hideout.production.recipes.push({
-            "_id": bcpFmjMatchCraft,
+        this.tables.hideout.production.recipes.push({
+            "_id": tcw_sp_match_craft,
             "areaType": 10,
             "continuous": false,
             "count": output,
-            "endProduct": bcp_fmj_762_match,
+            "endProduct": tcw_sp_762_match,
             "isCodeProduction": false,
             "isEncoded": false,
             "locked": false,
@@ -198,7 +216,7 @@ class Mod implements IPostDBLoadMod
                     "isEncoded": false,
                     "isFunctional": false,
                     "isSpawnedInSession": false,
-                    "templateId": bcp_fmj_762,
+                    "templateId": tcw_sp_762,
                     "type": "Item"
                 },
                 {
@@ -215,6 +233,48 @@ class Mod implements IPostDBLoadMod
                 }
             ]
         });
+    }
+
+    public moveRecoil(from_list: string[], to_list: string[], value: number): void {
+        to_list.forEach((item) => {
+            this.addRecoil(item, -value);
+        });
+        from_list.forEach((item) => {
+            this.addRecoil(item, -value);
+        });
+    }
+    public moveErgo(from_list: string[], to_list: string[], value: number): void {
+        to_list.forEach((item) => {
+            this.addErgo(item, -value);
+        });
+        from_list.forEach((item) => {
+            this.addErgo(item, -value);
+        });
+    }
+
+    public setRecoil(item, value): void {
+        this.tables.templates.items[item]._props.Recoil = value;
+    }
+
+    public getRecoil(item) {
+        return this.tables.templates.items[item]._props.Recoil;
+    }
+
+    public addRecoil(item, value): void {
+
+        this.setRecoil(item, this.getRecoil(item) + value)
+    }
+
+    public setErgo(item, value): void {
+        this.tables.templates.items[item]._props.Ergonomics = value;
+    }
+
+    public getErgo(item) {
+        return this.tables.templates.items[item]._props.Ergonomics;
+    }
+
+    public addErgo(item, value): void {
+        this.setErgo(item, this.getErgo(item) + value)
     }
 }
 

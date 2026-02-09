@@ -18,5 +18,7 @@ forceinstall:
 	cp -u -r export/* $(gamepath)
 	scp -r export/* $(hostwanuser):SPT_3_11/server_files
 
+compileandexecute: forceinstall
+
 play:
 	(make install && cd .. && make play)

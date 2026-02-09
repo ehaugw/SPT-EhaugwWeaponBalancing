@@ -1,6 +1,6 @@
 {
   "name": "ehaugw-weapon-balancing",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "sptVersion": "~3.11",
   "loadBefore": [],
   "loadAfter": [],
