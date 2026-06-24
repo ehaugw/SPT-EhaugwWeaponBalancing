@@ -87,7 +87,7 @@ class Mod implements IPostDBLoadMod
     public rebalanceScar(): void {
         // Total buff to accuracy
         // SCAR should be more accurate
-        [[scarH13in, 0.8], [scarH16in, 0.9], [scarH20in, 0.9]].forEach((value: [string, number]) => {
+        [[scarH13in, 0.7], [scarH16in, 0.75], [scarH20in, 0.9]].forEach((value: [string, number]) => {
             this.tables.templates.items[value[0]]._props.CenterOfImpact *= value[1];
         });
 
