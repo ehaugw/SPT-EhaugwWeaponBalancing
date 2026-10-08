@@ -237,7 +237,7 @@ class Mod implements IPostDBLoadMod
 
     public moveRecoil(from_list: string[], to_list: string[], value: number): void {
         to_list.forEach((item) => {
-            this.addRecoil(item, -value);
+            this.addRecoil(item, value);
         });
         from_list.forEach((item) => {
             this.addRecoil(item, -value);
@@ -245,7 +245,7 @@ class Mod implements IPostDBLoadMod
     }
     public moveErgo(from_list: string[], to_list: string[], value: number): void {
         to_list.forEach((item) => {
-            this.addErgo(item, -value);
+            this.addErgo(item, value);
         });
         from_list.forEach((item) => {
             this.addErgo(item, -value);
